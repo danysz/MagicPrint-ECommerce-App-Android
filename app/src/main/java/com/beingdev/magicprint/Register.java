@@ -7,9 +7,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
-import android.support.v4.content.res.ResourcesCompat;
-import android.support.v7.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
@@ -27,6 +26,7 @@ import com.android.volley.toolbox.Volley;
 import com.beingdev.magicprint.networksync.CheckInternetConnection;
 import com.beingdev.magicprint.networksync.RegisterRequest;
 import com.creativityapps.gmailbackgroundlibrary.BackgroundMail;
+import com.google.android.material.snackbar.Snackbar;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
@@ -118,7 +118,7 @@ public class Register extends AppCompatActivity {
                         public void onResponse(String response) {
                             progressDialog.dismiss();
 
-                            Log.e("Rsponse from server", response);
+                            Log.e("Response from server", response);
 
                             try {
                                 if (new JSONObject(response).getBoolean("success")) {
@@ -216,7 +216,7 @@ public class Register extends AppCompatActivity {
                         .withPassword("Singh@30")
                         .withMailto(emails)
                         .withType(BackgroundMail.TYPE_PLAIN)
-                        .withSubject("Greetings from Magic Print")
+                        .withSubject("Greetings from Tiaga Basket")
                         .withBody("Hello Mr/Miss, "+ name + "\n " + getString(R.string.registermail1))
                         .send();
 

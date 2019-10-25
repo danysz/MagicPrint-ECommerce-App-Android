@@ -3,14 +3,16 @@ package com.beingdev.magicprint;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v4.content.res.ResourcesCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.android.volley.NetworkError;
 import com.android.volley.RequestQueue;
@@ -22,6 +24,14 @@ import com.android.volley.toolbox.Volley;
 import com.beingdev.magicprint.networksync.CheckInternetConnection;
 import com.beingdev.magicprint.networksync.LoginRequest;
 import com.beingdev.magicprint.usersession.UserSession;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseException;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,26 +42,44 @@ import com.kaopiz.kprogresshud.KProgressHUD;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.concurrent.TimeUnit;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
+
 
 public class LoginActivity extends AppCompatActivity {
 
-    private EditText edtemail,edtpass;
-    private String email,pass,sessionmobile;
-    private TextView appname,forgotpass,registernow;
+/*
+    private EditText edtemail, edtpass;
+    private String email, pass, sessionmobile;
+    private TextView appname, forgotpass, registernow;
     private RequestQueue requestQueue;
-    private UserSession session;
     public static final String TAG = "MyTag";
     private int cartcount, wishlistcount;
+*/
 
+    private EditText editTextPhone, editTextCode;
+    private TextView appname;
+    private UserSession session;
+    String codeSent;
+
+    FirebaseAuth mAuth;
     //Getting reference to Firebase Database
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference mDatabaseReference = database.getReference();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        Log.e("Login CheckPoint","LoginActivity started");
+
+        mAuth = FirebaseAuth.getInstance();
+
+        session= new UserSession(getApplicationContext());
+
+
+        Log.e("Login CheckPoint", "LoginActivity started");
         //check Internet Connection
         new CheckInternetConnection(this).checkConnection();
 
@@ -59,7 +87,158 @@ public class LoginActivity extends AppCompatActivity {
         appname = findViewById(R.id.appname);
         appname.setTypeface(typeface);
 
-        edtemail= findViewById(R.id.email);
+        editTextCode = findViewById(R.id.editTextCode);
+        editTextPhone = findViewById(R.id.editTextPhone);
+
+        findViewById(R.id.buttonGetVerificationCode).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendVerificationCode();
+            }
+        });
+
+        findViewById(R.id.buttonSignIn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                verifySignInCode();
+            }
+        });
+
+    }
+
+    private void verifySignInCode(){
+        String code = editTextCode.getText().toString();
+        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(codeSent, code);
+        signInWithPhoneAuthCredential(credential);
+    }
+
+    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            //here you can open new activity
+                            Toast.makeText(getApplicationContext(),
+                                    "Login Successfull", Toast.LENGTH_LONG).show();
+
+                            //count value of firebase cart and wishlist
+                            countFirebaseValues();
+
+                            Intent loginSuccess = new Intent(LoginActivity.this, MainActivity.class);
+                            startActivity(loginSuccess);
+                            finish();
+
+                        } else {
+                            task.getException();
+                        }
+                    }
+                });
+    }
+
+    private void countFirebaseValues() {
+
+        String phone = editTextPhone.getText().toString();
+
+        mDatabaseReference.child("cart").child(phone).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.e(dataSnapshot.getKey(),dataSnapshot.getChildrenCount() + "");
+                session.setCartValue((int)dataSnapshot.getChildrenCount());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        mDatabaseReference.child("wishlist").child(phone).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.e(dataSnapshot.getKey(),dataSnapshot.getChildrenCount() + "");
+                session.setWishlistValue((int)dataSnapshot.getChildrenCount());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
+    private void sendVerificationCode() {
+
+        String phone = editTextPhone.getText().toString();
+
+        if (phone.isEmpty()) {
+            editTextPhone.setError("Phone number is required");
+            editTextPhone.requestFocus();
+            return;
+        }
+
+        if (phone.length() < 10) {
+            editTextPhone.setError("Please enter a valid phone");
+            editTextPhone.requestFocus();
+            return;
+        }
+
+
+        PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                phone,        // Phone number to verify
+                60,                 // Timeout duration
+                TimeUnit.SECONDS,   // Unit of timeout
+                this,               // Activity (for callback binding)
+                mCallbacks);        // OnVerificationStateChangedCallbacks
+    }
+
+    PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+        @Override
+        public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
+
+        }
+
+        @Override
+        public void onVerificationFailed(FirebaseException e) {
+
+        }
+
+        @Override
+        public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+            super.onCodeSent(s, forceResendingToken);
+
+            codeSent = s;
+        }
+    };
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.e("Login CheckPoint","LoginActivity resumed");
+        //check Internet Connection
+        new CheckInternetConnection(this).checkConnection();
+
+    }
+
+    @Override
+    protected void onStop () {
+        super.onStop();
+        Log.e("Login CheckPoint","LoginActivity stopped");
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
+}
+
+
+
+
+/*      edtemail= findViewById(R.id.email);
         edtpass= findViewById(R.id.password);
 
         Bundle registerinfo=getIntent().getExtras();
@@ -249,5 +428,4 @@ public class LoginActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         finish();
-    }
-}
+    }*/
