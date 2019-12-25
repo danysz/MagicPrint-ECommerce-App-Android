@@ -23,7 +23,7 @@ import com.onesignal.OneSignal
 /**
  * Created by mikepenz on 27.03.15.
  */
-class CustomApplication : MultiDexApplication() {
+class CustomApplicationOrg : MultiDexApplication() {
     override fun onCreate() {
         super.onCreate()
 
