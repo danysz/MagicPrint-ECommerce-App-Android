@@ -337,7 +337,7 @@ public class MainActivity extends AppCompatActivity {
         crossfadeDrawerLayout = (CrossfadeDrawerLayout) result.getDrawerLayout();
 
         //define maxDrawerWidth
-        crossfadeDrawerLayout.setMaxWidthPx(DrawerUIUtils.getOptimalDrawerWidth(this));
+        crossfadeDrawerLayout.setMaxWidthPx(DrawerUIUtils.INSTANCE.getOptimalDrawerWidth(this));
 
         //add second view (which is the miniDrawer)
         final MiniDrawer miniResult = result.getMiniDrawer();
