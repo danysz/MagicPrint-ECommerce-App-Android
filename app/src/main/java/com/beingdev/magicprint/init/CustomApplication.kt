@@ -5,6 +5,8 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.widget.ImageView
+import androidx.multidex.MultiDex
+import androidx.multidex.MultiDexApplication
 import com.activeandroid.ActiveAndroid
 import com.beingdev.magicprint.R
 import com.beingdev.magicprint.notification.MyNotificationOpenedHandler
@@ -19,12 +21,14 @@ import com.mikepenz.materialdrawer.util.DrawerImageLoader.Tags
 import com.mikepenz.materialdrawer.util.DrawerUIUtils.getPlaceHolder
 import com.onesignal.OneSignal
 
+
 /**
  * Created by mikepenz on 27.03.15.
  */
-class CustomApplication : Application() {
+class CustomApplication : MultiDexApplication() {
     override fun onCreate() {
         super.onCreate()
+
         //Database ORMhelper class
         ActiveAndroid.initialize(this)
         context = applicationContext
@@ -60,6 +64,11 @@ class CustomApplication : Application() {
                 return super.placeholder(ctx, tag)
             }
         })
+    }
+
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+        MultiDex.install(this)
     }
 
     companion object {

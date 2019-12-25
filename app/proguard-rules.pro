@@ -56,6 +56,7 @@
 
 -keepclasseswithmembers class * { @com.activeandroid.annotation.Column <fields>; }
 -keepattributes InnerClasses
+-keep class com.beingdev.magicprint.init.** { *; }
 -keep class com.beingdev.magicprint.prodcutscategory.Bags$* { *; }
 -keep class com.beingdev.magicprint.prodcutscategory.Calendars$* { *; }
 -keep class com.beingdev.magicprint.prodcutscategory.Cards$* { *; }

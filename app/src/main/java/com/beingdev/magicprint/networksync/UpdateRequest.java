@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class UpdateRequest extends StringRequest {
 
-    private static final String REGISTER_URL = "http://tiagabasket.000webhostapp.com/updateuser.php";
+    private static final String REGISTER_URL = "http://invendivapp.digital-cherry.com/updateuser.php";
     private Map<String, String> parameters;
     public UpdateRequest(String name, String mobile, String email, String newemail, Response.Listener<String> listener) {
         super(Method.POST, REGISTER_URL, listener, null);

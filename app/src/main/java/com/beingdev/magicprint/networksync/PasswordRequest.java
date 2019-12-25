@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class PasswordRequest extends StringRequest {
 
-    private static final String LOGIN_URL = "http://tiagabasket.000webhostapp.com/forgotpass.php";
+    private static final String LOGIN_URL = "http://invendivapp.digital-cherry.com/forgotpass.php";
     private Map<String, String> parameters;
 
     public PasswordRequest(String email, Response.Listener<String> listener, Response.ErrorListener errorListener) {

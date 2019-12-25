@@ -26,19 +26,19 @@ class MyNotificationOpenedHandler : NotificationOpenedHandler {
         if (data != null) {
             activityToBeOpened = data.optString("activityToBeOpened", null)
             if (activityToBeOpened != null && activityToBeOpened == "NotificationActivity") {
-                Log.i("OneSignalExample", "customkey set with value: $activityToBeOpened")
+//                Log.i("OneSignalExample", "customkey set with value: $activityToBeOpened")
                 val intent = Intent(CustomApplication.context, NotificationActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT or Intent.FLAG_ACTIVITY_NEW_TASK
-                CustomApplication.context.startActivity(intent)
+                CustomApplication.context?.startActivity(intent)
             } else if (activityToBeOpened != null && activityToBeOpened == "MainActivity") {
-                Log.i("OneSignalExample", "customkey set with value: $activityToBeOpened")
+//                Log.i("OneSignalExample", "customkey set with value: $activityToBeOpened")
                 val intent = Intent(CustomApplication.context, MainActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT or Intent.FLAG_ACTIVITY_NEW_TASK
-                CustomApplication.context.startActivity(intent)
+                CustomApplication.context?.startActivity(intent)
             } else {
                 val intent = Intent(CustomApplication.context, MainActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT or Intent.FLAG_ACTIVITY_NEW_TASK
-                CustomApplication.context.startActivity(intent)
+                CustomApplication.context?.startActivity(intent)
             }
         }
         //If we send notification with action buttons we need to specify the button id's and retrieve it to
