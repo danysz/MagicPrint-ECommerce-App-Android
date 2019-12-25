@@ -39,6 +39,8 @@ public class LoginActivity extends AppCompatActivity {
     private int cartcount, wishlistcount;
 */
 
+    private static final String TAG = "LoginActivity";
+
     private EditText editTextPhone, editTextCode;
     private TextView appname;
     private UserSession session;
@@ -101,7 +103,7 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             //here you can open new activity
                             Toast.makeText(getApplicationContext(),
-                                    "Login Successfull", Toast.LENGTH_LONG).show();
+                                    "Login Successful", Toast.LENGTH_LONG).show();
 
                             //count value of firebase cart and wishlist
                             countFirebaseValues();
@@ -177,16 +179,18 @@ public class LoginActivity extends AppCompatActivity {
     PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
         @Override
         public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
-
+            Log.d(TAG, "onVerificationCompleted");
+            signInWithPhoneAuthCredential(phoneAuthCredential);
         }
 
         @Override
         public void onVerificationFailed(FirebaseException e) {
-
+            Log.d(TAG, "onVerificationFailed");
         }
 
         @Override
         public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+            Log.d(TAG, "onCodeSent");
             super.onCodeSent(s, forceResendingToken);
 
             codeSent = s;
