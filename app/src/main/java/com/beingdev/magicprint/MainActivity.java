@@ -9,9 +9,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GravityCompat;
-import androidx.appcompat.widget.Toolbar;
 
 import com.beingdev.magicprint.networksync.CheckInternetConnection;
 import com.beingdev.magicprint.prodcutscategory.Bags;
