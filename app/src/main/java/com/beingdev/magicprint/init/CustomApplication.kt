@@ -1,11 +1,9 @@
 package com.beingdev.magicprint.init
 
-import android.app.Application
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.widget.ImageView
-import androidx.multidex.MultiDex
 import androidx.multidex.MultiDexApplication
 import com.activeandroid.ActiveAndroid
 import com.beingdev.magicprint.R
@@ -66,10 +64,6 @@ class CustomApplication : MultiDexApplication() {
         })
     }
 
-    override fun attachBaseContext(base: Context?) {
-        super.attachBaseContext(base)
-        MultiDex.install(this)
-    }
 
     companion object {
         var context: Context? = null
