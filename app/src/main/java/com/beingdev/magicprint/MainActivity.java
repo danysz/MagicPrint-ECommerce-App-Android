@@ -213,8 +213,8 @@ public class MainActivity extends AppCompatActivity {
         //Profile Making
         IProfile profile = new ProfileDrawerItem()
                 .withName(name)
-                .withEmail(email)
-                .withIcon(photo);
+                .withEmail(email);
+//                .withIcon(photo);
 
         AccountHeader headerResult = new AccountHeaderBuilder()
                 .withActivity(this)
