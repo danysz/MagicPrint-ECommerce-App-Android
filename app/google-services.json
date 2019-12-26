@@ -1,39 +1,53 @@
 {
   "project_info": {
-    "project_number": "763710677037",
-    "firebase_url": "https://magic-print-8db31.firebaseio.com",
-    "project_id": "magic-print-8db31",
-    "storage_bucket": "magic-print-8db31.appspot.com"
+    "project_number": "62619917364",
+    "firebase_url": "https://invendivappdemo.firebaseio.com",
+    "project_id": "invendivappdemo",
+    "storage_bucket": "invendivappdemo.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:763710677037:android:3c7d6470405dd51d",
+        "mobilesdk_app_id": "1:62619917364:android:5338e4dcd3afa05e8c3e61",
         "android_client_info": {
           "package_name": "com.beingdev.magicprint"
         }
       },
       "oauth_client": [
         {
-          "client_id": "763710677037-oqv89qlsh8ef5dcj5mqe9k0stkbsgdgr.apps.googleusercontent.com",
+          "client_id": "62619917364-ua12dicfgh4ej951pbd36apiem6e5s9t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.beingdev.magicprint",
+            "certificate_hash": "68baa5fac56ced127c6e0cec96023dd2aa8933bc"
+          }
+        },
+        {
+          "client_id": "62619917364-bbg1mp5o1gul4apv9eologt9pibt5kls.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.beingdev.magicprint",
+            "certificate_hash": "ec99e8ec4b1881800ddefdb103f526dcaec3cb76"
+          }
+        },
+        {
+          "client_id": "62619917364-qq3b53r3p22n9oohvcu8s9b713sa92tb.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAQK0ptquntWfeTTNVqVH7lDWeP-rLR4K8"
+          "current_key": "AIzaSyDfNc3L8D5GqgtxL29Bc0Sj1OpuKHMDJrc"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
+          "other_platform_oauth_client": [
+            {
+              "client_id": "62619917364-qq3b53r3p22n9oohvcu8s9b713sa92tb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
